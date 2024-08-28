@@ -1,61 +1,115 @@
-# subweb
-## 简介
-subweb 是基于 subconverter 订阅转换的前端项目,方便用户快速生成各平台的订阅链接.
+# sub-web
 
-> *subweb 是我个人入门 vuejs 学习时简单做的一个案例,使用还算方便,开源出来,欢迎各路大佬贡献维护.*
+基于 vue-cli 与 [tindy2013/subconverter](https://github.com/tindy2013/subconverter) 后端实现的配置自动生成。
 
-*GitHub [stilleshan/subweb](https://github.com/stilleshan/subweb)  
-Docker [stilleshan/subweb](https://hub.docker.com/r/stilleshan/subweb)*
-> *docker image support for X86 and ARM*
+## Table of Contents
 
-## 示例
-[https://sub.ops.ci](https://sub.ops.ci)  
-[https://subweb-demo.vercel.app/](https://subweb-demo.vercel.app/)  
-*`前后端示例,可以直接使用.`*
+- [ChangeLog](#ChangeLog)
+- [Docker](#Docker)
+- [Requirements](#Requirements)
+- [Install](#install)
+- [Usage](#usage)
+- [Related](#Related)
+- [Contributing](#contributing)
+- [License](#license)
 
-## 部署
-### docker 本地版
-*适用于本机快速部署使用*
-```shell
-docker run -d --name subweb --restart always \
-  -p 18080:80 \
-  stilleshan/subweb
-```
+## ChangeLog
 
-访问 `http://127.0.0.1:18080`
+- 20200730
 
-### docker 自定义版 + 短链接版
-自定义版可以挂载配置文件来修改`API 地址`,`短链接地址`,`站点名称`,`导航链接`.  
-参考以下命令,修改本地挂载路径,启动容器后会生成`config.js`配置文件,更改后刷新生效.
+  - 独立各类后端配置到 .env 文件中，现在修改后端只需要修改 .env 即可。
+
+
+## Docker
 
 ```shell
-docker run -d --name subweb --restart always \
-  -p 18080:80 \
-  -v /PATH/subweb/public/conf:/usr/share/nginx/html/conf \
-  stilleshan/subweb
+docker run -d -p 58080:80 --restart always --name subweb lovinyarn/subweb:latest
 ```
 
-同时也可以不挂载目录,直接通过`-e`环境变量来修改`API 地址`,`短链接地址`和`站点名称`,但是无法修改`导航链接`.  
-`注意:以下域名请严格填写 http 或 https 协议,结尾不要 / 斜杠符号.`
+若需要对代码进行修改，你需要在本地构建镜像并运行。
+注：每次修改代码，你都需要重新执行 docker build 来执行打包操作。
+
 ```shell
-docker run -d --name subweb --restart always \
-  -p 18080:80 \
-  -e SITE_NAME=subweb \
-  -e API_URL=https://sub.ops.ci \
-  -e SHORT_URL=https://s.ops.ci \
-  stilleshan/subweb
+docker -v
+Docker version 23.0.4, build f480fb1
+
+docker build -t subweb-local:latest .
+docker run -d -p 58080:80 --restart always --name subweb subweb-local:latest
 ```
 
-访问 `http://127.0.0.1:18080`  
-> *推荐使用 nginx 反向代理部署*
+## Requirements
 
-### Vercel 部署
-Vercel 部署请切换至 vercel 分支查看。
+你需要安装 [Node](https://nodejs.org/zh-cn/) 与 [Yarn](https://legacy.yarnpkg.com/en/docs/install) 来安装依赖与打包发布。你可以通过以下命令查看是否安装成功。
+注：以下步骤为 Ubuntu 下相应命令，其他系统请自行修改。为了方便后来人解决问题，有问题请发 issue。
 
-### subweb + subconverter + myurls 合并进阶版
-详情查看 [stilleshan/sub](https://github.com/stilleshan/dockerfiles/tree/main/sub)
+```shell
+node -v
+v16.20.0
 
-## 链接
-- [stilleshan/sub](https://github.com/stilleshan/dockerfiles/tree/main/sub)
-- [stilleshan/subweb](https://github.com/stilleshan/subweb)
-- [stilleshan/subconverter](https://github.com/stilleshan/subconverter)
+yarn -v
+1.22.19
+```
+
+## Install
+
+```shell
+yarn install
+```
+
+## Usage
+
+```shell
+yarn serve
+```
+
+浏览器访问 <http://localhost:8080/>
+
+## Deploy
+
+发布到线上环境，你需要安装依赖，执行以下打包命令，生成的 dist 目录即为发布目录。如需修改默认后端，请修改 src/views/Subconverter.vue 中 **defaultBackend** 配置项。
+
+```shell
+yarn build
+```
+
+你需要安装 nginx (或其他 web 服务器)并正确配置。以下为示例配置，你需要修改 example.com 为自己域名并配置正确的项目根路径（https 自行配置）。
+
+```shell
+server {
+    listen 80;
+    server_name example.com;
+
+    root /var/www/http/sub-web/dist;
+    index index.html index.htm;
+
+    error_page 404 /index.html;
+
+    gzip on; #开启gzip压缩
+    gzip_min_length 1k; #设置对数据启用压缩的最少字节数
+    gzip_buffers 4 16k;
+    gzip_http_version 1.0;
+    gzip_comp_level 6; #设置数据的压缩等级,等级为1-9，压缩比从小到大
+    gzip_types text/plain text/css text/javascript application/json application/javascript application/x-javascript application/xml; #设置需要压缩的数据格式
+    gzip_vary on;
+
+    location ~* \.(css|js|png|jpg|jpeg|gif|gz|svg|mp4|ogg|ogv|webm|htc|xml|woff)$ {
+        access_log off;
+        add_header Cache-Control "public,max-age=30*24*3600";
+    }
+}
+```
+
+## Related
+
+- [tindy2013/subconverter](https://github.com/tindy2013/subconverter)
+- [CareyWang/MyUrls](https://github.com/CareyWang/MyUrls)
+
+## Contributing
+
+PRs accepted.
+
+Small note: If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+
+## License
+
+MIT © 2020 CareyWang
