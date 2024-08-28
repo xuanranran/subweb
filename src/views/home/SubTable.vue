@@ -66,6 +66,10 @@
                         <input class="form-check-input" type="checkbox" id="udp" v-model="moreConfig.udp" />
                         <label class="form-check-label" for="udp">开启UDP</label>
                       </div>
+					  <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="checkbox" id="expand" v-model="moreConfig.expand" />
+                        <label class="form-check-label" for="expand">Expand 规则不展开</label>
+                      </div>
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="sort" v-model="moreConfig.sort" />
                         <label class="form-check-label" for="sort">排序节点</label>
@@ -120,6 +124,7 @@ export default {
       exclude: '',
       emoji: true,
       udp: true,
+	  expand: true,
       sort: false,
       scv: false,
       list: false,
