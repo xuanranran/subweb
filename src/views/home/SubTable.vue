@@ -68,7 +68,7 @@
                       </div>
 					  <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="expand" v-model="moreConfig.expand" />
-                        <label class="form-check-label" for="expand">Expand 规则不展开</label>
+                        <label class="form-check-label" for="expand">Expand</label>
                       </div>
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="sort" v-model="moreConfig.sort" />
@@ -124,7 +124,7 @@ export default {
       exclude: '',
       emoji: true,
       udp: true,
-	  expand: true,
+	  expand: false,
       sort: false,
       scv: false,
       list: false,
