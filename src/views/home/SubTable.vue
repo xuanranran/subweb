@@ -66,7 +66,7 @@
                         <input class="form-check-input" type="checkbox" id="udp" v-model="moreConfig.udp" />
                         <label class="form-check-label" for="udp">开启UDP</label>
                       </div>
-					  <div class="form-check form-check-inline">
+                      <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="expand" v-model="moreConfig.expand" />
                         <label class="form-check-label" for="expand">Expand</label>
                       </div>
@@ -124,7 +124,7 @@ export default {
       exclude: '',
       emoji: true,
       udp: true,
-	  expand: false,
+      expand: false,
       sort: false,
       scv: false,
       list: false,
