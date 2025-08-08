@@ -4,7 +4,8 @@
       <div class="container">
         <div class="hero-text-box text-center">
           <h1 class="text-primary display-6 fw-bold">Subconverter 订阅转换</h1>
-          </div>
+          <!-- <h2 class="hero-sub-title h6 mb-4 pb-1">Subconverter 订阅转换支持 Clash QuantumultX Surge 等主流软件</h2> -->
+        </div>
         <div class="hero-animation-img">
           <SubTable />
         </div>
@@ -36,10 +37,9 @@ export default {
     margin-bottom: -18rem;
   }
 }
-/* 优化：调整手机端视图的边距，使其更美观 */
 @media (max-width: 575.98px) {
   .landing-hero .hero-animation-img {
-    margin-bottom: -16rem;
+    margin-bottom: -10rem;
   }
 }
 
@@ -52,10 +52,9 @@ export default {
     padding-top: 15rem;
   }
 }
-/* 优化：调整手机端视图的边距，为表单提供足够的空间 */
 @media (max-width: 575.98px) {
   .landing-hero-blank {
-    padding-top: 14rem;
+    padding-top: 7rem;
   }
 }
 </style>
