@@ -57,7 +57,7 @@
                     <div class="col-12 col-md-12">
                       <input class="form-control" placeholder="Exclude: 可选" v-model="moreConfig.exclude" />
                     </div>
-                    <div class="col-md check-div" :style="{ display: 'flex', flexWrap: 'wrap' }">
+                    <div class="col-md check-div">
                       <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" id="emoji" v-model="moreConfig.emoji" />
                         <label class="form-check-label" for="emoji">Emoji</label>
@@ -90,17 +90,17 @@
                     <div class="divider-text"><i class="ti ti-refresh" style="color: gray"></i></div>
                   </div>
                 </div>
-                <div class="col-12 col-md-10">
-                  <input class="form-control" placeholder="点击转换链接" v-model.trim="result.subUrl" />
+                <div class="col-12">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="点击转换链接" v-model.trim="result.subUrl" />
+                    <button type="button" class="btn btn-success" @click="getSubUrl()">转换</button>
+                  </div>
                 </div>
-                <div class="col-12 col-md-2">
-                  <button type="button" class="btn btn-success" @click="getSubUrl()">转换</button>
-                </div>
-                <div class="col-12 col-md-10">
-                  <input class="form-control" placeholder="点击获取短链" v-model.trim="result.shortUrl" />
-                </div>
-                <div class="col-12 col-md-2">
-                  <button type="button" class="btn btn-primary" @click="getShortUrl()">短链</button>
+                <div class="col-12">
+                  <div class="input-group">
+                    <input class="form-control" placeholder="点击获取短链" v-model.trim="result.shortUrl" />
+                    <button type="button" class="btn btn-primary" @click="getShortUrl()">短链</button>
+                  </div>
                 </div>
               </div>
             </div>
@@ -283,19 +283,18 @@ export default {
 @media (min-width: 767.98px) {
   .custom-div {
     width: 90%;
-    margin: 0 auto;
   }
 }
 @media (min-width: 991.98px) {
   .custom-div {
     width: 80%;
-    margin: 0 auto;
   }
 }
 @media (min-width: 1199.98px) {
   .custom-div {
     width: 70%;
-    margin: 0 auto;
+    /* 优化：增加最大宽度，防止在超宽屏上过度拉伸 */
+    max-width: 960px;
   }
 }
 
@@ -303,14 +302,22 @@ export default {
   width: 100%;
 }
 
+/* 优化：修改复选框容器样式，使其左对齐并自动换行 */
 .check-div {
   display: flex;
-  justify-content: center; /* 水平居中 */
+  flex-wrap: wrap;
   align-items: center; /* 垂直居中 */
-  height: 100%; /* 可以设置固定高度或者根据需求调整 */
 }
 
 .divider {
   margin: 1%;
+}
+
+/* 优化：为 input-group 内的按钮在移动端适配宽度 */
+@media (max-width: 767.98px) {
+  .input-group .btn {
+    /* 在小屏幕上，让按钮宽度稍微大一些以便点击 */
+    min-width: 80px;
+  }
 }
 </style>
