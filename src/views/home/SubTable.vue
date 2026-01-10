@@ -250,15 +250,15 @@ export default {
     },
     getConverter() {
       if (this.urls == '') {
-        this.$showDialog('warning', '注意', '请输入订阅链接或节点');
+        showNotification('请输入订阅链接或节点', '注意', 'warning');
         return false;
       }
       if (!regexCheck(this.api)) {
-        this.$showDialog('warning', '注意', '请输入自定义后端 API 地址，或选择默认后端服务。');
+        showNotification('请输入自定义后端 API 地址，或选择默认后端服务。', '注意', 'warning');
         return false;
       }
       if (this.remoteConfig == '' && this.isShowRemoteConfig) {
-        this.$showDialog('warning', '注意', '请输入远程配置地址，或选择默认配置。');
+        showNotification('请输入远程配置地址，或选择默认配置。', '注意', 'warning');
         return false;
       }
       if (this.api.endsWith('/')) {

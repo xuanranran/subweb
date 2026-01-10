@@ -1,37 +1,31 @@
 <template>
-  <html
-    lang="en"
-    class="light-style layout-navbar-fixed layout-compact layout-menu-fixed swal2-shown swal2-height-auto"
-    dir="ltr"
-  >
-    <div class="dialog-custom swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto">
-      <div
-        aria-labelledby="swal2-title"
-        aria-describedby="swal2-html-container"
-        class="swal2-popup swal2-modal swal2-icon-success swal2-show"
-        tabindex="-1"
-        role="dialog"
-        aria-live="assertive"
-        aria-modal="true"
-        style="display: grid"
-      >
-        <component :is="$store.state.app.dialog.icon" />
-        <!-- icon -->
-        <h2 class="swal2-title" style="display: block">
-          {{ $store.state.app.dialog.title }}
-        </h2>
-        <!-- title -->
-        <div class="swal2-html-container" style="display: block">
-          {{ $store.state.app.dialog.message }}
-        </div>
-        <!-- message -->
-        <div class="swal2-actions" style="display: flex">
-          <component :is="$store.state.app.dialog.button" />
-        </div>
-        <!-- button -->
+  <div class="dialog-custom swal2-container swal2-center swal2-backdrop-show" style="overflow-y: auto">
+    <div
+      aria-labelledby="swal2-title"
+      aria-describedby="swal2-html-container"
+      class="swal2-popup swal2-modal swal2-icon-success swal2-show"
+      tabindex="-1"
+      role="dialog"
+      aria-live="assertive"
+      aria-modal="true"
+      style="display: grid"
+    >
+      <component :is="$store.state.app.dialog.icon" />
+      <!-- icon -->
+      <h2 class="swal2-title" style="display: block">
+        {{ $store.state.app.dialog.title }}
+      </h2>
+      <!-- title -->
+      <div class="swal2-html-container" style="display: block">
+        {{ $store.state.app.dialog.message }}
       </div>
+      <!-- message -->
+      <div class="swal2-actions" style="display: flex">
+        <component :is="$store.state.app.dialog.button" />
+      </div>
+      <!-- button -->
     </div>
-  </html>
+  </div>
 </template>
 
 <script>
@@ -70,5 +64,14 @@ export default {
 /* 当前 div 样式加上 z-index: 999999 用于覆盖其他组件 */
 .dialog-custom {
   z-index: 1150;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.4);
 }
 </style>
