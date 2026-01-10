@@ -19,10 +19,14 @@ export default {
     },
   },
   mounted() {
+    // 动态添加 layout class 到 html 标签，以修复布局居中问题
+    document.documentElement.classList.add('layout-navbar-fixed', 'layout-wide');
     // 在组件挂载后，添加滚动事件监听器
     window.addEventListener('scroll', this.setNavActive);
   },
   beforeUnmount() {
+    // 移除布局 class
+    document.documentElement.classList.remove('layout-navbar-fixed', 'layout-wide');
     // 在组件销毁前，移除滚动事件监听器，以防止内存泄漏
     window.removeEventListener('scroll', this.setNavActive);
   },
