@@ -52,42 +52,66 @@
                   <label class="form-label" for="add-user-email">可选参数</label>
                   <div class="row g-3">
                     <div class="col-12 col-md-12">
-                      <input class="form-control" placeholder="Include: 可选" v-model="moreConfig.include" />
+                      <input class="form-control" id="filename" placeholder="返回的订阅文件名" v-model="moreConfig.filename" />
                     </div>
                     <div class="col-12 col-md-12">
-                      <input class="form-control" placeholder="Exclude: 可选" v-model="moreConfig.exclude" />
+                      <input class="form-control" placeholder="Include: 包含有关键字的节点, 支持正则" v-model="moreConfig.include" />
                     </div>
-                    <div class="col-md check-div" :style="{ display: 'flex', flexWrap: 'wrap' }">
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="emoji" v-model="moreConfig.emoji" />
-                        <label class="form-check-label" for="emoji">Emoji</label>
+                    <div class="col-12 col-md-12">
+                      <input class="form-control" placeholder="Exclude: 不包含有关键字的节点, 支持正则" v-model="moreConfig.exclude" />
+                    </div>
+                    
+                    <!-- Advanced Options: Joined Tabs -->
+                    <div class="col-12">
+                      <div class="joined-tab-group">
+                        <button type="button" class="joined-tab-item" :class="{ active: activeTab === 'global' }" @click="toggleTab('global')">
+                          <i class="ti ti-settings"></i> 全局字段
+                        </button>
+                        <button type="button" class="joined-tab-item" :class="{ active: activeTab === 'node' }" @click="toggleTab('node')">
+                          <i class="ti ti-server"></i> 节点字段
+                        </button>
+                        <button type="button" class="joined-tab-item" :class="{ active: activeTab === 'rule' }" @click="toggleTab('rule')">
+                          <i class="ti ti-list-check"></i> 规则集
+                        </button>
                       </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="udp" v-model="moreConfig.udp" />
-                        <label class="form-check-label" for="udp">开启UDP</label>
+
+                      <!-- Tab Content: Global -->
+                      <div class="tab-content-panel" v-if="activeTab === 'global'">
+                        <div class="row g-3">
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="emoji" v-model="moreConfig.emoji"><label class="form-check-label" for="emoji">Emoji</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="new_name" v-model="moreConfig.new_name"><label class="form-check-label" for="new_name">Clash New Field</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="nodelist" v-model="moreConfig.list"><label class="form-check-label" for="nodelist">Node List</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="sort" v-model="moreConfig.sort"><label class="form-check-label" for="sort">排序节点</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="append_type" v-model="moreConfig.append_type"><label class="form-check-label" for="append_type">节点类型</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="fdn" v-model="moreConfig.fdn"><label class="form-check-label" for="fdn">过滤非法节点</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="tls13" v-model="moreConfig.tls13"><label class="form-check-label" for="tls13">开启 TLS 1.3</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="insert" v-model="moreConfig.insert"><label class="form-check-label" for="insert">插入默认节点</label></div></div>
+                        </div>
                       </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="expand" v-model="moreConfig.expand" />
-                        <label class="form-check-label" for="expand">Expand</label>
+
+                      <!-- Tab Content: Node -->
+                      <div class="tab-content-panel" v-if="activeTab === 'node'">
+                         <div class="row g-3">
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="udp" v-model="moreConfig.udp"><label class="form-check-label" for="udp">启用 UDP</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="xudp" v-model="moreConfig.xudp"><label class="form-check-label" for="xudp">启用 XUDP</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="tfo" v-model="moreConfig.tfo"><label class="form-check-label" for="tfo">TCP Fast Open</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="scv" v-model="moreConfig.scv"><label class="form-check-label" for="scv">关闭证书检查</label></div></div>
+                         </div>
                       </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="sort" v-model="moreConfig.sort" />
-                        <label class="form-check-label" for="sort">排序节点</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="scv" v-model="moreConfig.scv" />
-                        <label class="form-check-label" for="scv">关闭证书检查</label>
-                      </div>
-                      <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="nodelist" v-model="moreConfig.list" />
-                        <label class="form-check-label" for="nodelist">Node List</label>
+
+                      <!-- Tab Content: Rule -->
+                      <div class="tab-content-panel" v-if="activeTab === 'rule'">
+                        <div class="row g-3">
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="expand" v-model="moreConfig.expand"><label class="form-check-label" for="expand">Expand (展开规则)</label></div></div>
+                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="classic" v-model="moreConfig.classic"><label class="form-check-label" for="classic">Classic Rule-Provider</label></div></div>
+                        </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 <div class="col-12 col-md-12">
                   <div class="divider divider-dashed">
-                    <div class="divider-text"><i class="ti ti-refresh" style="color: gray"></i></div>
+                    <div class="divider-text"><i class="ti ti-refresh"></i></div>
                   </div>
                 </div>
                 <div class="col-12 col-md-10">
@@ -120,6 +144,7 @@ export default {
   name: 'SubTable',
   setup() {
     const DEFAULT_MORECONFIG = {
+      filename: '',
       include: '',
       exclude: '',
       emoji: true,
@@ -128,6 +153,14 @@ export default {
       sort: false,
       scv: false,
       list: false,
+      new_name: true,
+      fdn: false,
+      tls13: false,
+      insert: false,
+      tfo: false,
+      xudp: false,
+      append_type: false,
+      classic: false,
     };
     return {
       DEFAULT_MORECONFIG,
@@ -168,9 +201,13 @@ export default {
       api: window.config.apiUrl,
       target: 'clash',
       remoteConfig: '',
+      activeTab: '', // 'global', 'node', 'rule'
     };
   },
   methods: {
+    toggleTab(tab) {
+      this.activeTab = this.activeTab === tab ? '' : tab;
+    },
     showMoreConfig() {
       this.isShowMoreConfig = !this.isShowMoreConfig;
     },

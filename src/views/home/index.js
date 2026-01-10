@@ -12,35 +12,78 @@ const getSubLink = function (urls, api, target, remoteConfig, isShowMoreConfig, 
     if (moreConfig.exclude != '') {
       finalUrl = finalUrl + '&exclude=' + encodeURIComponent(moreConfig.exclude);
     }
-    if (moreConfig.emoji) {
-      finalUrl = finalUrl + '&emoji=true';
+    if (moreConfig.list) {
+      finalUrl = finalUrl + '&list=true';
     } else {
-      finalUrl = finalUrl + '&emoji=false';
+      finalUrl = finalUrl + '&list=false';
     }
-    if (moreConfig.udp) {
-      finalUrl = finalUrl + '&udp=true';
-    } else {
-      finalUrl = finalUrl + '&udp=false';
+    if (moreConfig.filename) {
+      finalUrl = finalUrl + '&filename=' + encodeURIComponent(moreConfig.filename);
     }
     if (moreConfig.expand) {
       finalUrl = finalUrl + '&expand=true';
     } else {
       finalUrl = finalUrl + '&expand=false';
     }
-    if (moreConfig.sort) {
-      finalUrl = finalUrl + '&sort=true';
+    if (moreConfig.tfo) {
+      finalUrl = finalUrl + '&tfo=true';
     } else {
-      finalUrl = finalUrl + '&sort=false';
+      finalUrl = finalUrl + '&tfo=false';
     }
     if (moreConfig.scv) {
       finalUrl = finalUrl + '&scv=true';
     } else {
       finalUrl = finalUrl + '&scv=false';
     }
-    if (moreConfig.list) {
-      finalUrl = finalUrl + '&list=true';
+    if (moreConfig.fdn) {
+      finalUrl = finalUrl + '&fdn=true';
     } else {
-      finalUrl = finalUrl + '&list=false';
+      finalUrl = finalUrl + '&fdn=false';
+    }
+    if (moreConfig.sort) {
+      finalUrl = finalUrl + '&sort=true';
+    } else {
+      finalUrl = finalUrl + '&sort=false';
+    }
+    if (moreConfig.new_name) {
+      finalUrl = finalUrl + '&new_name=true';
+    } else {
+      finalUrl = finalUrl + '&new_name=false';
+    }
+    if (moreConfig.insert) {
+      finalUrl = finalUrl + '&insert=true';
+    } else {
+      finalUrl = finalUrl + '&insert=false';
+    }
+    if (moreConfig.udp) {
+      finalUrl = finalUrl + '&udp=true';
+    } else {
+      finalUrl = finalUrl + '&udp=false';
+    }
+    if (moreConfig.emoji) {
+      finalUrl = finalUrl + '&emoji=true';
+    } else {
+      finalUrl = finalUrl + '&emoji=false';
+    }
+    if (moreConfig.xudp) {
+      finalUrl = finalUrl + '&xudp=true';
+    } else {
+      finalUrl = finalUrl + '&xudp=false';
+    }
+    if (moreConfig.append_type) {
+      finalUrl = finalUrl + '&append_type=true';
+    } else {
+      finalUrl = finalUrl + '&append_type=false';
+    }
+    if (moreConfig.tls13) {
+      finalUrl = finalUrl + '&tls13=true';
+    } else {
+      finalUrl = finalUrl + '&tls13=false';
+    }
+    if (moreConfig.classic) {
+      finalUrl = finalUrl + '&classic=true';
+    } else {
+      finalUrl = finalUrl + '&classic=false';
     }
   }
   return finalUrl;

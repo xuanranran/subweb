@@ -1,0 +1,501 @@
+/* iOS 26 Liquid Glass Design System */
+
+/* Default Variables (Dark/Auto Base) */
+:root {
+  --glass-bg: rgba(20, 20, 30, 0.75);
+  /* Darker, richer glass */
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --glass-blur: blur(24px);
+  --primary-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  --accent-color: #007aff;
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --input-bg: rgba(0, 0, 0, 0.5);
+  /* Good contrast */
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --btn-radius: 999px;
+  --bg-animation: linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
+}
+
+/* Light Mode Overrides */
+[data-theme='light'] {
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  /* Higher opacity for visibility */
+  --glass-border: rgba(0, 0, 0, 0.15);
+  /* Dark border for edges */
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+  --glass-blur: blur(24px);
+  --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --accent-color: #007aff;
+  --text-primary: #1d1d1f;
+  --text-secondary: rgba(29, 29, 31, 0.65);
+  --input-bg: rgba(240, 240, 245, 0.6);
+  /* Slightly grey input to standout from white card */
+  --bg-animation: linear-gradient(-45deg, #e0c3fc, #8ec5fc, #e0c3fc);
+}
+
+/* Dark Mode Overrides (Explicit or System Preference) */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Ensure system dark matches our dark base */
+    --glass-bg: rgba(20, 20, 30, 0.75);
+    --input-bg: rgba(0, 0, 0, 0.5);
+  }
+}
+
+[data-theme='dark'] {
+  --glass-bg: rgba(20, 20, 30, 0.75);
+  --glass-border: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --glass-blur: blur(24px);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.7);
+  --input-bg: rgba(0, 0, 0, 0.5);
+  --bg-animation: linear-gradient(-45deg, #0f0c29, #302b63, #24243e);
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", sans-serif;
+  background: var(--bg-animation);
+  background-size: 400% 400%;
+  animation: gradientBG 15s ease infinite;
+  color: var(--text-primary);
+  min-height: 100vh;
+  transition: color 0.4s ease, background 0.4s ease;
+}
+
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Glass Card */
+.card {
+  background: var(--glass-bg) !important;
+  backdrop-filter: var(--glass-blur) !important;
+  -webkit-backdrop-filter: var(--glass-blur) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--glass-shadow);
+  color: var(--text-primary);
+  transition: background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease;
+}
+
+.card-header,
+.card-footer {
+  background: transparent !important;
+  border-bottom: 1px solid var(--glass-border) !important;
+  border-top: 1px solid var(--glass-border) !important;
+}
+
+/* Typography */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--text-primary);
+  font-weight: 600;
+  letter-spacing: -0.5px;
+}
+
+label.form-label {
+  color: var(--text-secondary);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+/* Form Elements */
+.form-control,
+.form-select {
+  background: var(--input-bg) !important;
+  border: 1px solid var(--glass-border) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-md) !important;
+  padding: 12px 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: var(--input-bg) !important;
+  border-color: var(--accent-color) !important;
+  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+}
+
+.form-select option {
+  background-color: #2b2b2b;
+  /* Fallback */
+  color: #fff;
+}
+
+/* Specific option styling based on theme */
+[data-theme='light'] .form-select option {
+  background-color: #ffffff;
+  color: #1d1d1f;
+}
+
+[data-theme='dark'] .form-select option {
+  background-color: #2b2b2b;
+  color: #ffffff;
+}
+
+/* Buttons */
+.btn {
+  border-radius: var(--btn-radius) !important;
+  padding: 12px 24px;
+  font-weight: 600;
+  font-size: 15px;
+  border: none !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+  backdrop-filter: none;
+}
+
+.btn:active {
+  transform: scale(0.96);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary {
+  background: #007aff !important;
+  color: white !important;
+}
+
+.btn-success {
+  background: #34c759 !important;
+  color: white !important;
+}
+
+.btn-warning {
+  background: #ff9f0a !important;
+  color: white !important;
+}
+
+[data-theme='light'] .btn-warning {
+  color: white !important;
+  /* Ensure readable on orange */
+}
+
+/* Mobile Input Optimization */
+@media (max-width: 768px) {
+
+  .form-control,
+  .form-select,
+  .btn {
+    min-height: 48px;
+    /* Larger touch targets */
+    font-size: 16px !important;
+    /* Prevent iOS zoom */
+  }
+}
+
+/* Joined Button Group (Segmented) */
+.joined-tab-group {
+  display: flex;
+  width: 100%;
+  border-radius: 999px;
+  /* Pill shape */
+  border: 1px solid var(--glass-border);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 4px;
+  /* Internal spacing for floating look */
+  gap: 0;
+}
+
+[data-theme='light'] .joined-tab-group {
+  background: #f0f2f5;
+  border-color: #e0e0e0;
+}
+
+.joined-tab-item {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-radius: 999px;
+  /* Inner pills */
+  color: var(--text-secondary);
+  padding: 10px 10px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  white-space: nowrap;
+  position: relative;
+  z-index: 1;
+}
+
+/* Remove border-right separators for the floating pill style */
+.joined-tab-item {
+  border-right: none;
+}
+
+.joined-tab-item:hover {
+  color: var(--text-primary);
+}
+
+[data-theme='light'] .joined-tab-item:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.joined-tab-item.active {
+  background: var(--accent-color);
+  color: white !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+[data-theme='light'] .joined-tab-item.active {
+  background: white;
+  color: var(--accent-color) !important;
+  font-weight: 600;
+}
+
+/* Tab Content Panel - Detached & Rounded */
+.tab-content-panel {
+  background: rgba(255, 255, 255, 0.6);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  /* Fully rounded card */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  padding: 24px;
+  margin-top: 16px;
+  /* Separation from tabs */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  animation: slideUpFade 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme='light'] .tab-content-panel {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme='dark'] .tab-content-panel {
+  background: rgba(30, 30, 30, 0.6);
+  border-color: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px) scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.btn-danger {
+  background: #ff3b30 !important;
+  color: white !important;
+}
+
+/* Helper for the theme toggle button */
+.icon-btn.theme-toggle-btn {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-primary);
+  border-radius: 4px;
+  /* Slightly rounded square like icon-btn */
+  width: 36px;
+  height: 36px;
+  display: flex;
+  /* Flex to center icon */
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: all 0.2s ease;
+  font-size: 1.2rem;
+}
+
+.icon-btn.theme-toggle-btn:hover {
+  background: var(--glass-border);
+  border-color: var(--glass-border);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Mobile Tweaks */
+/* Mobile Tweaks */
+@media (max-width: 768px) {
+
+  /* Restore floating card look with rounded corners */
+  .card {
+    border-radius: 20px !important;
+    /* Restore top corners */
+    margin: 10px !important;
+    /* Small margin from screen edges */
+    border: 1px solid var(--glass-border) !important;
+  }
+
+  .container,
+  .custom-div {
+    width: 100% !important;
+    padding: 0 !important;
+    /* Let card margin handle spacing */
+  }
+
+  /* Compact Input Elements */
+  .form-control,
+  .form-select,
+  .btn {
+    min-height: 40px;
+    /* Reduced height */
+    font-size: 14px !important;
+    /* Smaller font as requested */
+    padding: 8px 12px;
+  }
+
+  /* Compact Labels */
+  label.form-label {
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+  }
+
+  /* Compact Tabs */
+  .joined-tab-group {
+    padding: 3px;
+  }
+
+  .joined-tab-item {
+    padding: 6px 2px;
+    font-size: 0.8rem;
+    /* Smaller tab text */
+  }
+
+  .tab-content-panel {
+    padding: 16px;
+    /* Reduce panel padding */
+    margin-top: 12px;
+  }
+
+  /* Adjust navbar brand size */
+  .app-brand-text {
+    font-size: 1.1rem !important;
+  }
+}
+
+/* Checkboxes */
+.form-check-input {
+  background-color: transparent;
+  border-color: var(--glass-border);
+  width: 1.15em;
+  /* Slightly smaller */
+  height: 1.15em;
+}
+
+.form-check-input:checked {
+  background-color: var(--accent-color);
+  border-color: var(--accent-color);
+}
+
+.form-check-label {
+  color: var(--text-primary);
+  margin-left: 6px;
+}
+
+/* Textarea specific */
+textarea.form-control {
+  min-height: 120px;
+}
+
+/* Divider */
+.divider-text {
+  background: transparent !important;
+  color: var(--text-secondary);
+}
+
+.divider::before,
+.divider::after {
+  border-top: 1px solid var(--glass-border) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.3);
+  border-radius: 4px;
+}
+
+[data-theme='light'] ::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.5);
+}
+
+/* GLOBAL LAYOUT TRANSPARENCY FIX */
+/* Remove default opaque backgrounds from template classes to show gradient */
+.layout-wrapper,
+.layout-page,
+.layout-container,
+.content-wrapper,
+.container-xxl,
+.layout-navbar,
+nav.layout-navbar {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+/* Ensure the body gradient is visible */
+html,
+body {
+  background: var(--bg-animation) !important;
+}
+
+/* Navbar Transparency Force */
+.bg-body {
+  background-color: transparent !important;
+}
+
+.app-brand {
+  background: transparent !important;
+}
+
+/* Navbar Links Visibility Fix */
+.navbar-nav .nav-link {
+  color: var(--text-primary) !important;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+  color: var(--accent-color) !important;
+}
+
+.app-brand-text {
+  color: var(--text-primary) !important;
+}

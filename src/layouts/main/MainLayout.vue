@@ -1,7 +1,7 @@
 <template>
   <html
     lang="en"
-    class="light-style layout-navbar-fixed layout-wide"
+    class="layout-navbar-fixed layout-wide"
     dir="ltr"
     data-theme="theme-default"
     data-assets-path="assets/"
@@ -11,17 +11,15 @@
     <body>
       <nav-bar />
       <router-view />
-      <footer-bar />
     </body>
   </html>
 </template>
 
 <script>
 import NavBar from './navbar/NavBar.vue';
-import FooterBar from './footer/FooterBar.vue';
 
 export default {
-  components: { NavBar, FooterBar },
+  components: { NavBar },
   name: 'MainLayout',
   methods: {
     setNavActive() {
