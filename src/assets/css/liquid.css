@@ -499,3 +499,45 @@ body {
 .app-brand-text {
   color: var(--text-primary) !important;
 }
+
+/* 
+   FORCE LIGHT MODE STYLES 
+   User requested !important to fix dark card issue
+*/
+[data-theme='light'] .card,
+.light-style .card {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(0, 0, 0, 0.1) !important;
+  color: #1d1d1f !important;
+}
+
+[data-theme='light'] .form-control,
+[data-theme='light'] .form-select,
+.light-style .form-control,
+.light-style .form-select {
+  background: rgba(255, 255, 255, 0.6) !important;
+  color: #1d1d1f !important;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme='light'] .input-group-text,
+.light-style .input-group-text {
+  background: rgba(255, 255, 255, 0.6) !important;
+  color: #1d1d1f !important;
+  border-color: rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-theme='light'] h1,
+[data-theme='light'] h2,
+[data-theme='light'] h3,
+[data-theme='light'] h4,
+[data-theme='light'] h5,
+[data-theme='light'] h6,
+.light-style h1, 
+.light-style h2, 
+.light-style h3,
+.light-style h4, 
+.light-style h5, 
+.light-style h6 {
+  color: #1d1d1f !important;
+}
