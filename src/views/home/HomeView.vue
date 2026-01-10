@@ -57,4 +57,15 @@ export default {
     padding-top: 7rem;
   }
 }
+
+/* Force container centering */
+#hero-animation,
+#landingHero {
+  width: 100% !important;
+}
+
+.container {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
 </style>
