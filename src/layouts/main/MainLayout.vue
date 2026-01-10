@@ -1,18 +1,8 @@
 <template>
-  <html
-    lang="en"
-    class="layout-navbar-fixed layout-wide"
-    dir="ltr"
-    data-theme="theme-default"
-    data-assets-path="assets/"
-    data-template="front-pages"
-    @wheel="setNavActive"
-  >
-    <body>
-      <nav-bar />
-      <router-view />
-    </body>
-  </html>
+  <div class="layout-wrapper layout-navbar-fixed layout-wide">
+    <nav-bar />
+    <router-view />
+  </div>
 </template>
 
 <script>
