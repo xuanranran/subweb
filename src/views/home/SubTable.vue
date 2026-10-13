@@ -29,7 +29,7 @@
                   </select>
                 </div>
                 <div class="col-12 col-md-12" v-if="isShowManualApiUrl">
-                  <input class="form-control" placeholder="自定义后端 API 地址示例：https://sub.miaoco.me" v-model="api" />
+                  <input class="form-control" placeholder="自定义后端 API 地址示例：https://sub.miaoceo.com" v-model="api" />
                 </div>
                 <div class="col-8 col-md-10">
                   <label class="form-label" for="remote">远程配置</label>
@@ -168,7 +168,7 @@ export default {
   },
   data() {
     return {
-      placeholder: '多订阅链接或节点请确保每行一条\n支持手动使用"|"分割多链接或节点\nprovider:自定义名称,订阅链接(自定义Provider名称 请用api.miaoco.me)\nprovider:HK,https://example.com/sub \nprovider:HK,https://a|provider:HK,https://b ',
+      placeholder: '多订阅链接或节点请确保每行一条\n支持手动使用"|"分割多链接或节点\nprovider:自定义名称,订阅链接(自定义Provider名称 请用api.miaoceo.com)\nprovider:HK,https://example.com/sub \nprovider:HK,https://a|provider:HK,https://b ',
       targetOptions: [
         { value: 'clash', text: 'Clash' },
         { value: 'clashr', text: 'ClashR' },
