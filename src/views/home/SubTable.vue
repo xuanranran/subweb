@@ -1,132 +1,141 @@
 <template>
   <div class="row g-4 custom-div">
-    <div class="col-12 col-lg-12 pt-4 pt-lg-0">
-      <div class="tab-content p-0">
-        <div class="tab-pane fade show active">
-          <div class="card mb-4">
-            <div class="card-body">
-              <div class="row mb-3 g-3">
-                <div class="col-12 col-md-12">
-                  <label class="form-label" for="add-user-email">订阅链接</label>
-                  <textarea class="form-control" v-model.trim="urls" :placeholder="placeholder" rows="5"></textarea>
-                </div>
-                <div class="col-5 col-md-6">
-                  <label class="form-label" for="client">客户端</label>
-                  <select class="form-select" id="client" v-model="target" @change="selectTarget">
-                    <option v-for="option in targetOptions" :key="option" :value="option.value">
-                      {{ option.text }}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-7 col-md-6">
-                  <label class="form-label" for="api">后端服务</label>
-                  <select class="form-select" id="api" @change="selectApi">
-                    <option value="">请选择后端</option>
-                    <option v-for="option in apiUrl" :key="option" :value="option.value">
-                      {{ option.text }}
-                    </option>
-                    <option value="manual">自定义后端 API 地址</option>
-                  </select>
-                </div>
-                <div class="col-12 col-md-12" v-if="isShowManualApiUrl">
-                  <input class="form-control" placeholder="自定义后端 API 地址示例：https://sub.miaoceo.com" v-model="api" />
-                </div>
-                <div class="col-8 col-md-10">
-                  <label class="form-label" for="remote">远程配置</label>
-                  <select class="form-select" id="remote" @change="selectRemoteConfig">
-                    <option value="">请选择配置</option>
-                    <option v-for="option in remoteConfigOptions" :key="option" :value="option.value">
-                      {{ option.text }}
-                    </option>
-                    <option value="manual">自定义远程配置地址</option>
-                  </select>
-                </div>
-                <div class="col-4 col-md-2">
-                  <label class="form-label">&nbsp;</label>
-                  <button type="button" class="btn btn-warning" @click="showMoreConfig">参数</button>
-                </div>
-                <div class="col-12 col-md-12" v-if="isShowRemoteConfig">
-                  <input class="form-control" placeholder="自定义远程配置地址：" v-model="remoteConfig" />
-                </div>
-                <div class="col-12 col-md-12" v-if="isShowMoreConfig">
-                  <label class="form-label" for="add-user-email">可选参数</label>
-                  <div class="row g-3">
-                    <div class="col-12 col-md-12">
-                      <input class="form-control" id="filename" placeholder="返回的订阅文件名" v-model="moreConfig.filename" />
-                    </div>
-                    <div class="col-12 col-md-12">
-                      <input class="form-control" placeholder="Include: 包含有关键字的节点, 支持正则" v-model="moreConfig.include" />
-                    </div>
-                    <div class="col-12 col-md-12">
-                      <input class="form-control" placeholder="Exclude: 不包含有关键字的节点, 支持正则" v-model="moreConfig.exclude" />
-                    </div>
-                    
-                    <!-- Advanced Options: Joined Tabs -->
-                    <div class="col-12">
-                      <div class="joined-tab-group">
-                        <button type="button" class="joined-tab-item" :class="{ active: activeTab === 'global' }" @click="toggleTab('global')">
-                          <i class="ti ti-settings"></i> 全局字段
-                        </button>
-                        <button type="button" class="joined-tab-item" :class="{ active: activeTab === 'node' }" @click="toggleTab('node')">
-                          <i class="ti ti-server"></i> 节点字段
-                        </button>
-                        <button type="button" class="joined-tab-item" :class="{ active: activeTab === 'rule' }" @click="toggleTab('rule')">
-                          <i class="ti ti-list-check"></i> 规则集
-                        </button>
-                      </div>
-
-                      <!-- Tab Content: Global -->
-                      <div class="tab-content-panel" v-if="activeTab === 'global'">
-                        <div class="row g-3">
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="emoji" v-model="moreConfig.emoji"><label class="form-check-label" for="emoji">Emoji</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="new_name" v-model="moreConfig.new_name"><label class="form-check-label" for="new_name">Clash New Field</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="nodelist" v-model="moreConfig.list"><label class="form-check-label" for="nodelist">Node List</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="sort" v-model="moreConfig.sort"><label class="form-check-label" for="sort">排序节点</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="append_type" v-model="moreConfig.append_type"><label class="form-check-label" for="append_type">节点类型</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="fdn" v-model="moreConfig.fdn"><label class="form-check-label" for="fdn">过滤非法节点</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="tls13" v-model="moreConfig.tls13"><label class="form-check-label" for="tls13">开启 TLS 1.3</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="insert" v-model="moreConfig.insert"><label class="form-check-label" for="insert">插入默认节点</label></div></div>
-                        </div>
-                      </div>
-
-                      <!-- Tab Content: Node -->
-                      <div class="tab-content-panel" v-if="activeTab === 'node'">
-                         <div class="row g-3">
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="udp" v-model="moreConfig.udp"><label class="form-check-label" for="udp">启用 UDP</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="xudp" v-model="moreConfig.xudp"><label class="form-check-label" for="xudp">启用 XUDP</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="tfo" v-model="moreConfig.tfo"><label class="form-check-label" for="tfo">TCP Fast Open</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="scv" v-model="moreConfig.scv"><label class="form-check-label" for="scv">关闭证书检查</label></div></div>
-                         </div>
-                      </div>
-
-                      <!-- Tab Content: Rule -->
-                      <div class="tab-content-panel" v-if="activeTab === 'rule'">
-                        <div class="row g-3">
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="expand" v-model="moreConfig.expand"><label class="form-check-label" for="expand">Expand (展开规则)</label></div></div>
-                           <div class="col-6 col-md-4"><div class="form-check"><input class="form-check-input" type="checkbox" id="classic" v-model="moreConfig.classic"><label class="form-check-label" for="classic">Classic Rule-Provider</label></div></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-12 col-md-12">
-                  <div class="divider divider-dashed">
-                    <div class="divider-text"><i class="ti ti-refresh"></i></div>
-                  </div>
-                </div>
-                <div class="col-12 col-md-10">
-                  <input class="form-control" placeholder="点击转换链接" v-model.trim="result.subUrl" />
-                </div>
-                <div class="col-12 col-md-2">
-                  <button type="button" class="btn btn-success" @click="getSubUrl()">转换</button>
-                </div>
-                <div class="col-12 col-md-10">
-                  <input class="form-control" placeholder="点击获取短链" v-model.trim="result.shortUrl" />
-                </div>
-                <div class="col-12 col-md-2">
-                  <button type="button" class="btn btn-primary" @click="getShortUrl()">短链</button>
+    <div class="col-12">
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="row g-3">
+            <div class="col-12">
+              <label class="form-label" for="sources">订阅链接</label
+              ><textarea
+                id="sources"
+                class="form-control"
+                v-model="urls"
+                :placeholder="placeholder"
+                rows="5"
+              ></textarea>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="api">后端服务</label
+              ><select class="form-select" id="api" v-model="apiChoice" @change="selectApi">
+                <option v-for="option in apiUrl" :key="option.value" :value="option.value">{{ option.text }}</option>
+                <option value="manual">自定义后端</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-6">
+              <label class="form-label" for="client">客户端</label
+              ><select class="form-select" id="client" v-model="target">
+                <option v-for="option in targetOptions" :key="option.value" :value="option.value">
+                  {{ option.label }}
+                </option>
+              </select>
+            </div>
+            <template v-if="apiChoice === 'manual'"
+              ><div class="col-12 col-md-8">
+                <label class="form-label" for="custom-api">API 根地址</label
+                ><input id="custom-api" class="form-control" v-model="api" placeholder="https://sub.miaoceo.com" />
+              </div>
+              <div class="col-12 col-md-4">
+                <label class="form-label" for="profile">后端类型</label
+                ><select id="profile" class="form-select" v-model="manualProfile">
+                  <option value="standard">subconverter</option>
+                  <option value="extended">SubConverter-Extended</option>
+                </select>
+              </div></template
+            >
+            <div class="col-12 col-md-10">
+              <label class="form-label" for="remote">远程配置</label
+              ><select class="form-select" id="remote" v-model="configChoice">
+                <option value="">使用后端默认配置</option>
+                <option v-for="option in remoteConfigOptions" :key="option.value" :value="option.value">
+                  {{ option.text }}
+                </option>
+                <option value="manual">自定义远程配置 URL</option>
+              </select>
+            </div>
+            <div class="col-12 col-md-2">
+              <label class="form-label">&nbsp;</label
+              ><button type="button" class="btn btn-warning w-100" @click="isShowMoreConfig = !isShowMoreConfig">
+                参数
+              </button>
+            </div>
+            <div class="col-12" v-if="configChoice === 'manual'">
+              <input
+                aria-label="自定义配置 URL"
+                class="form-control"
+                placeholder="https://example.com/config.ini"
+                v-model="manualConfig"
+              />
+            </div>
+            <div class="col-12" v-if="target === 'surge'">
+              <label class="form-label" for="surge-version">Surge 版本</label
+              ><select id="surge-version" class="form-select" v-model="ver">
+                <option value="">后端默认（{{ surgeDefault }}）</option>
+                <option v-for="v in [2, 3, 4, 5]" :key="v" :value="String(v)">Surge {{ v }}</option>
+              </select>
+            </div>
+            <div class="col-12" v-if="isShowMoreConfig">
+              <p class="small mb-3">
+                留空或“跟随后端”保留后端配置。{{
+                  profile === 'extended' ? 'Extended 使用新 Clash 字段；分组与规则请放入远程配置。' : ''
+                }}
+              </p>
+              <div class="row g-3">
+                <div class="col-12 col-md-6" v-for="field in fields" :key="field.key">
+                  <label class="form-label" :for="'param-' + field.key"
+                    >{{ field.label }} <small>{{ field.key }}</small></label
+                  ><select
+                    v-if="field.kind === 'bool'"
+                    :id="'param-' + field.key"
+                    class="form-select"
+                    v-model="moreConfig[field.key]"
+                  >
+                    <option value="">跟随后端</option>
+                    <option value="true">开启</option>
+                    <option value="false">关闭</option></select
+                  ><textarea
+                    v-else-if="field.multiline"
+                    :id="'param-' + field.key"
+                    class="form-control"
+                    v-model="moreConfig[field.key]"
+                    rows="2"
+                  ></textarea
+                  ><input
+                    v-else
+                    :id="'param-' + field.key"
+                    class="form-control"
+                    :type="field.kind === 'secret' ? 'password' : 'text'"
+                    v-model="moreConfig[field.key]"
+                    placeholder="留空使用后端配置"
+                    autocomplete="off"
+                  /><small class="d-block mt-1">{{ field.help }}</small>
                 </div>
               </div>
+              <button class="btn btn-outline-secondary mt-3" @click="resetOptions">恢复默认</button>
+            </div>
+            <div class="col-12"><hr /></div>
+            <div class="col-12 col-md-10">
+              <input
+                class="form-control"
+                aria-label="转换结果"
+                placeholder="点击转换生成链接"
+                :value="result.subUrl"
+                readonly
+              />
+            </div>
+            <div class="col-12 col-md-2">
+              <button class="btn btn-success w-100" :disabled="busy" @click="getSubUrl">转换</button>
+            </div>
+            <div class="col-12 col-md-10">
+              <input
+                class="form-control"
+                aria-label="短链接"
+                placeholder="点击获取短链"
+                :value="result.shortUrl"
+                readonly
+              />
+            </div>
+            <div class="col-12 col-md-2">
+              <button class="btn btn-primary w-100" :disabled="busy" @click="getShortUrl">短链</button>
             </div>
           </div>
         </div>
@@ -136,177 +145,162 @@
 </template>
 
 <script>
-import { showLoading, hideLoading } from '@/components/loading';
 import { getSubLink, regexCheck } from './index.js';
+import { base64 } from '../../lib/converter.js';
+import { parametersFor, targetsFor, PROFILES } from '../../lib/backends.js';
 import { request } from '@/network';
 import showNotification from '@/components/notification';
+
 export default {
   name: 'SubTable',
-  setup() {
-    const DEFAULT_MORECONFIG = {
-      filename: '',
-      include: '',
-      exclude: '',
-      emoji: true,
-      udp: true,
-      expand: false,
-      sort: false,
-      scv: false,
-      list: false,
-      new_name: true,
-      fdn: false,
-      tls13: false,
-      insert: false,
-      tfo: false,
-      xudp: false,
-      append_type: false,
-      classic: false,
-    };
+  data() {
+    const apis = window.config.apiUrl;
+    const first = apis.find((a) => a.profile === 'extended') || apis[0];
     return {
-      DEFAULT_MORECONFIG,
+      apiUrl: apis,
+      apiChoice: first.value,
+      api: first.value,
+      manualProfile: 'standard',
+      urls: '',
+      target: 'clash',
+      ver: '',
+      configChoice: '',
+      manualConfig: '',
+      moreConfig: Object.fromEntries(parametersFor(first.profile || 'standard', 'clash').map((p) => [p.key, ''])),
+      isShowMoreConfig: false,
+      busy: false,
+      result: { subUrl: '', shortUrl: '' },
     };
   },
-  data() {
-    return {
-      placeholder: '多订阅链接或节点请确保每行一条\n支持手动使用"|"分割多链接或节点\nprovider:自定义名称,订阅链接(自定义Provider名称 请用api.miaoceo.com)\nprovider:HK,https://example.com/sub \nprovider:HK,https://a|provider:HK,https://b ',
-      targetOptions: [
-        { value: 'clash', text: 'Clash' },
-        { value: 'clashr', text: 'ClashR' },
-        { value: 'v2ray', text: 'V2Ray' },
-        { value: 'quan', text: 'Quantumult' },
-        { value: 'quanx', text: 'Quantumult X' },
-        { value: 'surge&ver=2', text: 'SurgeV2' },
-        { value: 'surge&ver=3', text: 'SurgeV3' },
-        { value: 'surge&ver=4', text: 'SurgeV4' },
-        { value: 'surfboard', text: 'Surfboard' },
-        { value: 'ss', text: 'SS (SIP002)' },
-        { value: 'sssub', text: 'SS Android' },
-        { value: 'ssd', text: 'SSD' },
-        { value: 'ssr', text: 'SSR' },
-        { value: 'loon', text: 'Loon' },
-        { value: 'singbox', text: 'Sing-box' },
-      ],
-      apiUrl: window.config.apiUrl,
-      shortUrl: window.config.shortUrl,
-      remoteConfigOptions: window.config.remoteConfigOptions,
-      moreConfig: this.DEFAULT_MORECONFIG,
-      isShowMoreConfig: false,
-      isShowManualApiUrl: false,
-      isShowRemoteConfig: false,
-      result: {
-        subUrl: '',
-        shortUrl: '',
-      },
-      urls: [],
-      api: window.config.apiUrl,
-      target: 'clash',
-      remoteConfig: '',
-      activeTab: '', // 'global', 'node', 'rule'
-    };
+  computed: {
+    profile() {
+      return this.apiChoice === 'manual'
+        ? this.manualProfile
+        : this.apiUrl.find((a) => a.value === this.apiChoice)?.profile || 'standard';
+    },
+    targetOptions() {
+      return targetsFor(this.profile);
+    },
+    surgeDefault() {
+      return PROFILES[this.profile].surgeDefault;
+    },
+    fields() {
+      return parametersFor(this.profile, this.target).filter((p) => p.key !== 'provider_headers');
+    },
+    remoteConfigOptions() {
+      return window.config.remoteConfigOptions.filter((c) => !c.targets || c.targets.includes(this.target));
+    },
+    remoteConfig() {
+      return this.configChoice === 'manual' ? this.manualConfig : this.configChoice;
+    },
+    placeholder() {
+      return (
+        '订阅链接或节点，每行一条；也支持 | 分隔\n' +
+        (this.profile === 'extended'
+          ? 'provider:HK,https://example.com/sub\n支持 Provider 名称、tag、interval 前缀'
+          : 'tag:来源名称,https://example.com/sub')
+      );
+    },
+    state() {
+      return JSON.stringify([
+        this.api,
+        this.profile,
+        this.urls,
+        this.target,
+        this.ver,
+        this.remoteConfig,
+        this.isShowMoreConfig,
+        this.moreConfig,
+      ]);
+    },
+  },
+  watch: {
+    state() {
+      this.result = { subUrl: '', shortUrl: '' };
+    },
+    profile() {
+      if (!this.targetOptions.some((t) => t.value === this.target)) this.target = 'clash';
+      this.resetOptions();
+      this.ver = '';
+    },
+    target() {
+      this.resetOptions();
+      this.ver = '';
+      if (this.configChoice !== 'manual' && !this.remoteConfigOptions.some((c) => c.value === this.configChoice))
+        this.configChoice = '';
+    },
   },
   methods: {
-    toggleTab(tab) {
-      this.activeTab = this.activeTab === tab ? '' : tab;
+    resetOptions() {
+      this.moreConfig = Object.fromEntries(this.fields.map((p) => [p.key, '']));
     },
-    showMoreConfig() {
-      this.isShowMoreConfig = !this.isShowMoreConfig;
+    selectApi() {
+      this.api = this.apiChoice === 'manual' ? '' : this.apiChoice;
     },
-    selectApi(event) {
-      if (event.target.value == 'manual') {
-        this.api = '';
-        this.isShowManualApiUrl = true;
-      } else {
-        this.isShowManualApiUrl = false;
-        this.api = event.target.value;
-      }
-    },
-    selectRemoteConfig(event) {
-      if (event.target.value == 'manual') {
-        this.remoteConfig = '';
-        this.isShowRemoteConfig = true;
-      } else {
-        this.isShowRemoteConfig = false;
-        this.remoteConfig = event.target.value;
-      }
-    },
-    toCopy(url, title) {
-      if (!url) {
-        this.$showDialog('warning', '注意', '复制失败 内容为空');
-        return;
-      }
-      var copyInput = document.createElement('input');
-      copyInput.setAttribute('value', url);
-      document.body.appendChild(copyInput);
-      copyInput.select();
+    async toCopy(value) {
       try {
-        var copyed = document.execCommand('copy');
-        if (copyed) {
-          document.body.removeChild(copyInput);
-          showNotification(title + ' 复制成功', '成功');
-        }
+        await navigator.clipboard.writeText(value);
+        return;
       } catch {
-        this.$showDialog('warning', '注意', '复制失败，请检查浏览器兼容性');
+        /* fallback for LAN HTTP */
       }
+      const area = document.createElement('textarea');
+      area.value = value;
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.append(area);
+      area.select();
+      const ok = document.execCommand('copy');
+      area.remove();
+      if (!ok) throw new Error('复制失败，请手动复制结果。');
     },
     getConverter() {
-      if (this.urls == '') {
-        showNotification('请输入订阅链接或节点', '注意', 'warning');
-        return false;
-      }
-      if (!regexCheck(this.api)) {
-        showNotification('请输入自定义后端 API 地址，或选择默认后端服务。', '注意', 'warning');
-        return false;
-      }
-      if (this.remoteConfig == '' && this.isShowRemoteConfig) {
-        showNotification('请输入远程配置地址，或选择默认配置。', '注意', 'warning');
-        return false;
-      }
-      if (this.api.endsWith('/')) {
-        // 自动删除末尾的斜杠
-        this.api = this.api.slice(0, -1);
-      }
+      if (!regexCheck(this.api)) throw new Error('请选择后端或输入完整的 API 根地址。');
+      if (this.configChoice === 'manual' && !this.manualConfig.trim()) throw new Error('请输入自定义配置 URL。');
+      const selectedTarget = this.target + (this.target === 'surge' && this.ver ? '&ver=' + this.ver : '');
       this.result.subUrl = getSubLink(
         this.urls,
         this.api,
-        this.target,
+        selectedTarget,
         this.remoteConfig,
         this.isShowMoreConfig,
-        this.moreConfig
+        this.moreConfig,
+        this.profile
       );
-      return true;
+      return this.result.subUrl;
     },
-    getSubUrl() {
-      if (!this.getConverter()) {
-        return;
+    async getSubUrl() {
+      try {
+        const url = this.getConverter();
+        await this.toCopy(url);
+        showNotification('转换链接已复制');
+      } catch (e) {
+        showNotification(e.message, '注意', 'warning');
       }
-      this.toCopy(this.result.subUrl, '订阅链接');
     },
-    getShortUrl() {
-      if (!this.getConverter()) {
-        return;
-      }
-      let data = new FormData();
-      data.append('longUrl', btoa(this.result.subUrl));
-      showLoading();
-      request({
-        method: 'post',
-        url: this.shortUrl + '/short',
-        header: {
-          'Content-Type': 'application/form-data; charset=utf-8',
-        },
-        data: data,
-      })
-        .then((res) => {
-          if (res.data.Code === 1 && res.data.ShortUrl !== '') {
-            this.result.shortUrl = res.data.ShortUrl;
-            this.toCopy(this.result.shortUrl, '短链接');
-          }
-          hideLoading();
-        })
-        .catch(() => {
-          this.$showDialog('error', '失败', '短链接生成失败 请检查短链接服务是否可用');
-          hideLoading();
+    async getShortUrl() {
+      this.busy = true;
+      try {
+        const url = this.getConverter();
+        const data = new FormData();
+        data.append('longUrl', base64(url));
+        const res = await request({
+          method: 'post',
+          url: window.config.shortUrl.replace(/\/$/, '') + '/short',
+          timeout: 15000,
+          data,
         });
+        if (this.result.subUrl !== url) return;
+        if (res.data.Code !== 1 || !/^https?:\/\//.test(res.data.ShortUrl || ''))
+          throw new Error(res.data.Message || '短链服务未返回有效链接。');
+        this.result.shortUrl = res.data.ShortUrl;
+        await this.toCopy(res.data.ShortUrl);
+        showNotification('短链接已复制');
+      } catch (e) {
+        showNotification(e.message || '短链请求失败', '失败');
+      } finally {
+        this.busy = false;
+      }
     },
   },
 };
@@ -317,37 +311,19 @@ export default {
   width: 100%;
   margin: 0 auto;
 }
-@media (min-width: 767.98px) {
-  .custom-div {
-    width: 90%;
-    margin: 0 auto;
-  }
+small {
+  font-size: 11px;
+  opacity: 0.7;
+  line-height: 1.7;
 }
-@media (min-width: 991.98px) {
+@media (min-width: 992px) {
   .custom-div {
     width: 80%;
-    margin: 0 auto;
   }
 }
-@media (min-width: 1199.98px) {
+@media (min-width: 1200px) {
   .custom-div {
     width: 70%;
-    margin: 0 auto;
   }
-}
-
-.btn {
-  width: 100%;
-}
-
-.check-div {
-  display: flex;
-  justify-content: center; /* 水平居中 */
-  align-items: center; /* 垂直居中 */
-  height: 100%; /* 可以设置固定高度或者根据需求调整 */
-}
-
-.divider {
-  margin: 1%;
 }
 </style>
